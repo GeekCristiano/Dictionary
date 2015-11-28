@@ -84,8 +84,6 @@ public class UI extends JFrame {
         timer.setInitialDelay(0);
         timer.start();
 
-
-
         setVisible(true);
         pack();
     }

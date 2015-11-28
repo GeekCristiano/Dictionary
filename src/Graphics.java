@@ -8,8 +8,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class UI extends JFrame {
-
+public class Graphics extends JFrame {
     private JFrame frame;
     private JPanel panel;
     private JButton addBtn;
@@ -59,7 +58,7 @@ public class UI extends JFrame {
     }
 
 
-    public UI() {
+    public Graphics() {
         super("Редактор словаря");
 
         setLayout(new GridLayout(5, 1, 20, 20));
@@ -87,13 +86,12 @@ public class UI extends JFrame {
 
         setVisible(true);
         pack();
-        System.out.println("");
 
     }
 
 
     public static void main(String[] args) {
-        UI plot = new UI();
+        Graphics plot = new Graphics();
     }
 
 }

@@ -87,8 +87,6 @@ public class UI extends JFrame {
 
         setVisible(true);
         pack();
-        System.out.println("");
-
     }
 
 

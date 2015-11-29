@@ -19,7 +19,7 @@ public class Graphics extends JFrame {
     private JLabel timeLb;
     private Dictionary dictionary;
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
-    private ExecutorService executor = Executors.newFixedThreadPool(1);
+    private ExecutorService executor = Executors.newSingleThreadExecutor();
 
     public Graphics() {
         super("Редактор словаря");
@@ -56,7 +56,7 @@ public class Graphics extends JFrame {
 //                try{
                 JTextField inTF = (JTextField) e.getSource();
                 try {
-                    float in = Float.parseFloat(inTF.getText());
+                    float in = Long.parseLong(inTF.getText());
                     if (in < 0) {
                         addBtn.setEnabled(false);
                         delBtn.setEnabled(false);
@@ -92,18 +92,18 @@ public class Graphics extends JFrame {
         addBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                executor.submit(() -> {
+                executor.submit(() -> {
                     dictionary.add(Long.parseLong(inTextField.getText()));
-//                });
+                });
             }
         });
 
         delBtn.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                executor.submit(() -> {
+                executor.submit(() -> {
                     dictionary.remove(Long.parseLong(inTextField.getText()));
-//                });
+                });
             }
         });
 

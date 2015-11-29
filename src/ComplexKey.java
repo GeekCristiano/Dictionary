@@ -9,7 +9,6 @@ public class ComplexKey implements Comparable, Serializable {
         Random r = new Random();
         num = r.nextLong();
         str = new FiveLetterString();
-        System.out.println(num+""+str.getString());
     }
 
     public Long getNum() {

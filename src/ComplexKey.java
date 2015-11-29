@@ -9,6 +9,7 @@ public class ComplexKey implements Comparable, Serializable {
         Random r = new Random();
         num = r.nextLong();
         str = new FiveLetterString();
+        System.out.println(num+""+str.getString());
     }
 
     public Long getNum() {
@@ -22,7 +23,9 @@ public class ComplexKey implements Comparable, Serializable {
     public int compareTo(Object o) {
         ComplexKey obj = (ComplexKey) o;
         if (num.compareTo(obj.getNum()) != 0)
-            return Long.signum(num - obj.getNum());
+            if(num.compareTo(obj.getNum())>0) return 1;
+            else return -1;
+//            return Long.signum(num - obj.getNum());
         else
             return (str.compareTo(obj.getStr()));
     }

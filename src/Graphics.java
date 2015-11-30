@@ -52,7 +52,7 @@ public class Graphics extends JFrame {
         inTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-//                try{
+
                 JTextField inTF = (JTextField) e.getSource();
                 try {
                     float in = Long.parseLong(inTF.getText());

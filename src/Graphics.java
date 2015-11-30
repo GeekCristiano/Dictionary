@@ -75,7 +75,6 @@ public class Graphics extends JFrame {
         });
 
         addBtn = new JButton("добавить");
-        addBtn.setSize(30, 100);
         addBtn.setEnabled(false);
         delBtn = new JButton("удалить");
         delBtn.setEnabled(false);

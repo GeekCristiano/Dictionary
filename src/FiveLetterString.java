@@ -10,7 +10,7 @@ public class FiveLetterString implements Comparable, Serializable {
     public FiveLetterString() {
         Random r = new Random();
         for (int i = 0; i < kLen; i++) {
-            str[i] = (byte)('a' + r.nextInt(26));
+            str[i] = (byte) ('a' + r.nextInt(26));
         }
     }
 
@@ -20,7 +20,7 @@ public class FiveLetterString implements Comparable, Serializable {
 
     @Override
     public int compareTo(Object o) {
-        FiveLetterString obj = (FiveLetterString)o;
+        FiveLetterString obj = (FiveLetterString) o;
         for (int i = 0; i < kLen; i++) {
             if (this.str[i] != obj.getString()[i]) {
                 if (this.str[i] < obj.getString()[i])

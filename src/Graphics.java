@@ -21,16 +21,9 @@ public class Graphics extends JFrame {
     private Dictionary dictionary;
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private ExecutorService executor = Executors.newSingleThreadExecutor();
-    private Thread timeThread;
-
-
-    public JProgressBar getProgressBar() {
-        return progressBar;
-    }
 
     public Graphics() {
         super("Редактор словаря");
-        System.out.println("");
         setLayout(new GridBagLayout());
         setLayout(new GridLayout(0, 1, 20, 20));
         addWindowListener(new WindowAdapter() {
@@ -41,18 +34,16 @@ public class Graphics extends JFrame {
                     executor.awaitTermination(3, TimeUnit.SECONDS);
                 } catch (InterruptedException ex) {
                     ex.printStackTrace();
-                    System.err.println("tasks interrupted");
                 } finally {
                     if (!executor.isTerminated()) {
-                        System.err.println("cancel non-finished tasks");
+                        System.err.println("Задача не завершена!");
                     }
                     executor.shutdownNow();
-                    System.out.println("shutdown finished");
+                    System.out.println("Принудительная остановка!");
                 }
                 e.getWindow().dispose();
             }
         });
-
 
         dictionary = new Dictionary(this);
         inTextField = new JTextField();
@@ -113,13 +104,10 @@ public class Graphics extends JFrame {
                 executor.submit(() -> {
                     progressBar.setValue(0);
                     dictionary.remove(Long.parseLong(inTextField.getText()));
-
                 });
 
             }
         });
-
-
 
         Timer timer = new Timer(1000, new ActionListener() {
             @Override
@@ -132,16 +120,19 @@ public class Graphics extends JFrame {
         timer.setInitialDelay(0);
         timer.start();
 
-
         pack();
         setVisible(true);
 
-
     }
 
+    public JProgressBar getProgressBar() {
+        return progressBar;
+    }
 
     public static void main(String[] args) {
-        Graphics plot = new Graphics();
+
+        Graphics prepareGUI = new Graphics();
+
     }
 
 }

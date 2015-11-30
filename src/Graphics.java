@@ -1,6 +1,9 @@
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.WindowAdapter;
+import java.awt.event.WindowEvent;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -10,8 +13,6 @@ import java.util.concurrent.TimeUnit;
 
 public class Graphics extends JFrame {
 
-    private JFrame frame;
-    private JPanel panel;
     private JButton addBtn;
     private JButton delBtn;
     private JProgressBar progressBar;
@@ -20,6 +21,12 @@ public class Graphics extends JFrame {
     private Dictionary dictionary;
     private final DateFormat timeFormat = new SimpleDateFormat("HH:mm:ss");
     private ExecutorService executor = Executors.newSingleThreadExecutor();
+    private Thread timeThread;
+
+
+    public JProgressBar getProgressBar() {
+        return progressBar;
+    }
 
     public Graphics() {
         super("Редактор словаря");
@@ -31,14 +38,15 @@ public class Graphics extends JFrame {
             public void windowClosing(WindowEvent e) {
                 try {
                     executor.shutdown();
-                    executor.awaitTermination(60, TimeUnit.SECONDS);
+                    executor.awaitTermination(3, TimeUnit.SECONDS);
                 } catch (InterruptedException ex) {
+                    ex.printStackTrace();
                     System.err.println("tasks interrupted");
                 } finally {
                     if (!executor.isTerminated()) {
                         System.err.println("cancel non-finished tasks");
                     }
-//                    executor.shutdownNow();
+                    executor.shutdownNow();
                     System.out.println("shutdown finished");
                 }
                 e.getWindow().dispose();
@@ -46,10 +54,10 @@ public class Graphics extends JFrame {
         });
 
 
-        dictionary = new Dictionary();
+        dictionary = new Dictionary(this);
         inTextField = new JTextField();
         inTextField.setText("Количество модифицируемых объектов");
-        inTextField.setToolTipText("Количество модифицируемых объектов");
+        inTextField.setToolTipText("После ввода нажмите <Enter>");
         inTextField.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -93,6 +101,7 @@ public class Graphics extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 executor.submit(() -> {
+                    progressBar.setValue(0);
                     dictionary.add(Long.parseLong(inTextField.getText()));
                 });
             }
@@ -102,10 +111,15 @@ public class Graphics extends JFrame {
             @Override
             public void actionPerformed(ActionEvent e) {
                 executor.submit(() -> {
+                    progressBar.setValue(0);
                     dictionary.remove(Long.parseLong(inTextField.getText()));
+
                 });
+
             }
         });
+
+
 
         Timer timer = new Timer(1000, new ActionListener() {
             @Override

@@ -1,35 +1,29 @@
+import javax.swing.*;
 import java.io.*;
 import java.util.*;
 
 public class Dictionary implements Serializable {
 
     private TreeMap<ComplexKey, Double> dict;
-    private ComplexKey key;
-    private Double value;
+    private Graphics application = null;
 
-    public Dictionary() {
+
+    public Dictionary(Graphics application) {
         dict = new TreeMap<>();
-    }
-
-    public Double getValue() {
-        return this.value;
-    }
-
-    public ComplexKey getKey() {
-        return this.key;
+        this.application = application;
     }
 
     public void add(long q) {
         while (q != 0) {
 
-            key = new ComplexKey();
-            value = Math.random();
-            System.out.println(value);
+            ComplexKey key = new ComplexKey();
+            Double value = Math.random();
             dict.put(key, value);
             q--;
         }
-        autoSaveToFile(dict);
         autoSaveSerialization(dict);
+        autoSaveToFile(dict);
+
     }
 
     public void remove(long q) {
@@ -48,8 +42,9 @@ public class Dictionary implements Serializable {
                 dict.remove(entry.getKey());
                 q--;
             }
-            autoSaveToFile(dict);
             autoSaveSerialization(dict);
+            autoSaveToFile(dict);
+
         }
     }
 
@@ -75,17 +70,26 @@ public class Dictionary implements Serializable {
             FileWriter fw = new FileWriter(System.getProperty("user.dir") + "\\" + "log.txt");
             BufferedWriter bw = new BufferedWriter(fw);
 
+            int count = 0;
+            JProgressBar pbBar = this.application.getProgressBar();
             while (itr.hasNext()) {
                 Map.Entry entry = (Map.Entry) itr.next();
                 ComplexKey k = (ComplexKey) entry.getKey();
                 Double value = (Double) entry.getValue();
 
-                String key = k.getNum() + "" + new String(k.getStr().getString());
+                String key = k.getNum() + " " + new String(k.getStr().getString());
 
-                String record = key + "=" + value;
-                bw.write(record);
+                bw.write(key + " = " + value);
                 bw.newLine();
                 bw.flush();
+                int progress = ++count;
+
+                SwingUtilities.invokeLater(new Runnable() {
+                    @Override
+                    public void run() {
+                        pbBar.setValue(progress);
+                    }
+                });
             }
             bw.close();
 
@@ -94,6 +98,5 @@ public class Dictionary implements Serializable {
         }
 
     }
-
 
 }
